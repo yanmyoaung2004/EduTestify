@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('options', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->id();
             $table->unsignedBigInteger('question_id');
             $table->string('option_text')->nullable();
             $table->foreign('question_id')

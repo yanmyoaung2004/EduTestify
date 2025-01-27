@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('test_responses', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->id();
             $table->unsignedBigInteger('test_id');
             $table->unsignedBigInteger('question_id');
-            $table->unsignedBigInteger('answer_id');
+            $table->unsignedBigInteger('option_id');
             $table->foreign('test_id')
                 ->references('id')
                 ->on('tests')
@@ -24,9 +24,9 @@ return new class extends Migration
                 ->references('id')
                 ->on('questions')
                 ->onDelete('cascade');
-            $table->foreign('answer_id')
+            $table->foreign('option_id')
                 ->references('id')
-                ->on('answers')
+                ->on('options')
                 ->onDelete('cascade');
             $table->timestamps();
         });

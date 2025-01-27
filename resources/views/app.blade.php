@@ -8,6 +8,7 @@
     <link rel="icon"
         href="http://res.cloudinary.com/depbjqed1/image/upload/v1732093687/Universal_Technology_bzn473.png"
         type="image/png">
+
     @viteReactRefresh
     @vite('resources/js/app.tsx')
     @inertiaHead
