@@ -10,8 +10,8 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
-        'chapter',
-        'topic',
+        'chapter_id',
+        'topic_id',
         'year',
         'question_text',
         'correct_answer'
@@ -27,6 +27,10 @@ class Question extends Model
         return $this->hasOne(TestResponse::class);
     }
 
+    public function getBySubject($subject)
+    {
+        return $this->where('subject_id',$subject->id)->get();
+    }
 
     public function explanation()
     {

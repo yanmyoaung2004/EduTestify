@@ -13,4 +13,6 @@ class ExamController extends Controller
     {
         return Inertia::render('Exam');
     }
+
+    
 }

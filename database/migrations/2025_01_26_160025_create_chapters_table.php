@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
             $table->string('chapter');
+            $table->unsignedBigInteger('subject_id');
+            $table->foreign('subject_id')
+                ->references('id')
+                ->on('subjects')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

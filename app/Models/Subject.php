@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class Subject extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'chapter_id',
         'name',
     ];
 
-    public function chapter()
+    public function chapters()
     {
-        return $this->belongsTo(Chapter::class);
+        return $this->hasMany(Chapter::class)->with('topics');
     }
 }
