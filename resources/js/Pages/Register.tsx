@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, router } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
+
 import {
     checkPasswordMatch,
     checkPasswordStrength,
     PasswordStatus,
 } from "@/lib/services";
-import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { CheckCheck, Info } from "lucide-react";
+import {
+    handleFailureToast,
+    handleSuccessToastWithLink,
+    handleWarningToast,
+} from "@/lib/toast";
 
 interface LoginCredentials {
     name: string;
@@ -19,52 +24,49 @@ interface LoginCredentials {
     confirmPassword: string;
 }
 
-const Register = () => {
+interface RegisterProps {
+    message: string;
+    status: number;
+    randomKey: string;
+}
+const Register = ({ message, status, randomKey }: RegisterProps) => {
     const [formData, setFormData] = useState<LoginCredentials>({
         name: "",
         email: "",
         password: "",
         confirmPassword: "",
     });
-    const { toast } = useToast();
+
+    useEffect(() => {
+        if (status !== 200) {
+            handleFailureToast(message);
+        }
+        if (status === 201) {
+            handleSuccessToastWithLink(message, "/login");
+            setTimeout(() => {
+                Inertia.visit("/login");
+            }, 2500);
+        }
+    }, [message, randomKey]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         if (checkPasswordMatch(formData.password, formData.confirmPassword)) {
-            const status: PasswordStatus = checkPasswordStrength(
-                formData.password
-            );
-            if (status === PasswordStatus.weak) {
-                console.log("Password is weak");
-                return;
-            }
-            router.post(
-                `register`,
-                {
-                    name: formData.name,
-                    email: formData.email,
-                    password: formData.password,
-                    password_confirmation: formData.password,
-                },
-                {
-                    onSuccess: () => {
-                        toast({
-                            title: "Register",
-                            color: "primary",
-                            description: "You have registered successfully!",
-                        });
-                    },
-                    onError: () => {
-                        console.log("error");
-                        toast({
-                            variant: "destructive",
-                            title: "Register",
-                            description: "Registeration Failed!",
-                        });
-                    },
-                }
-            );
+            // const status: PasswordStatus = checkPasswordStrength(
+            //     formData.password
+            // );
+            // if (status === PasswordStatus.weak) {
+            //     handleWarningToast("Your password is too weak!");
+            //     return;
+            // }
+            router.post(`register`, {
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
+                password_confirmation: formData.confirmPassword,
+            });
+        } else {
+            handleWarningToast("Password does not match!");
         }
     };
 
@@ -76,21 +78,6 @@ const Register = () => {
         }));
     };
 
-    const handleTestToast = () => {
-        toast({
-            description: (
-                <div className="flex items-center gap-2 text-slate-800">
-                    <CheckCheck className="w-5 h-5 " />
-                    <span>This is a test notification</span>
-                </div>
-            ),
-            duration: 3000,
-            style: {
-                backgroundColor: "#b6f8c4",
-            },
-        });
-    };
-
     return (
         <div className="mt-20">
             <Toaster />
@@ -100,7 +87,6 @@ const Register = () => {
                         <h2 className="pb-7 text-4xl font-semibold text-gray-700">
                             Register
                         </h2>
-                        <Button onClick={handleTestToast}>Test Toast</Button>
                     </div>
                     <form
                         className="flex flex-col gap-6"
@@ -109,6 +95,7 @@ const Register = () => {
                         <div className="flex flex-col gap-3">
                             <Label htmlFor="Your name">Your Name</Label>
                             <Input
+                                required
                                 type="text"
                                 placeholder="Name"
                                 id="name"
@@ -118,6 +105,7 @@ const Register = () => {
                         <div className="flex flex-col gap-3">
                             <Label htmlFor="Your email">Your Email</Label>
                             <Input
+                                required
                                 type="email"
                                 placeholder="Email"
                                 id="email"
@@ -127,6 +115,7 @@ const Register = () => {
                         <div className="flex flex-col gap-3">
                             <Label htmlFor="Your password">Your Password</Label>
                             <Input
+                                required
                                 type="password"
                                 placeholder="Password"
                                 id="password"
@@ -138,13 +127,13 @@ const Register = () => {
                                 Your Confirm Password
                             </Label>
                             <Input
+                                required
                                 type="password"
                                 placeholder="Confirm Password"
                                 id="confirmPassword"
                                 onChange={handleChange}
                             />
                         </div>
-
                         <Button type="submit">Register</Button>
                     </form>
                     <div className="flex gap-2 text-sm mt-5 justify-center items-center">

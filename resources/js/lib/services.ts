@@ -1,7 +1,7 @@
 export enum PasswordStatus {
-    weak = "Your password is too weak. Consider adding more characters, including uppercase letters, numbers, and special symbols.",
-    medium = "Your password is okay, but it can be stronger. Try adding more unique characters to improve security.",
-    strong = "Great job! Your password is strong and secure.",
+    weak = "weak",
+    medium = "medium",
+    strong = "strong",
 }
 
 export const checkPasswordStrength = (password: string): PasswordStatus => {

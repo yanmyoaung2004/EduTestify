@@ -12,22 +12,39 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return Inertia::render('Login');
+        return Inertia::render('Login', [
+            'status' => 200]);
     }
 
     public function showRegisterForm()
     {
-        return Inertia::render('Register');
+        return Inertia::render('Register', [
+            'status' => 200
+        ]);
     }
 
     public function register(Request $request)
     {
+        return Inertia::render('Register', [
+                'message' => 'You have successfully registered!',
+                'status' => 201,
+                'randomKey' => uniqid('student_', true)
+            ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|confirmed|min:8',
         ]);
 
+        $existedUser = Student::where('email', $request->email)->first();
+        if ($existedUser != null) {
+            return Inertia::render('Register', [
+                'message' => 'User already existed!',
+                'status' => 409,
+                'randomKey' => uniqid('student_', true)
+                ]);
+        }
         $user = Student::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -35,38 +52,27 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+        return to_route('login');
 
-        return redirect('/login')->with('message', 'Uesr created successfully');
     }
-
-
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-        $user = Student::where('email', $request->email)->first();
-        if (!$user) {
+        $existedUser = Student::where('email', $request->email)->first();
+        if ($existedUser == null) {
             return Inertia::render('Login', [
-                'message' => 'User not found!',
-            ]);
+                'message' => 'User Not Found!',
+                'status' => 409,
+                'randomKey' => uniqid('student_', true)
+                ]);
         }
-
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             return redirect('/');
-            /*if($user->role == 'admin'){
-                return redirect('/dashboard');
-            }
-            if($user->role == 'sale'){
-                return redirect('/pos');
-            }*/
-
         }
         return Inertia::render('Login', [
                 'message' => 'Incorrect Password!',
+                'status' => 401
             ]);
     }
 
