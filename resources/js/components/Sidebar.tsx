@@ -7,7 +7,7 @@ const navItems = [
     { icon: Home, label: "Dashboard", href: "/" },
     { icon: BookOpen, label: "Practice", href: "/practice" },
     { icon: FileText, label: "Quizzes", href: "/quizzes" },
-    { icon: FileText, label: "Exams", href: "/exams" },
+    { icon: FileText, label: "Tests", href: "/tests" },
     { icon: User, label: "Profile", href: "/profile" },
     { icon: Settings, label: "Settings", href: "/settings" },
 ];

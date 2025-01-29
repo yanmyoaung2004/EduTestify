@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models;
 
 class TestQuestion extends Model
 {
@@ -17,6 +18,11 @@ class TestQuestion extends Model
     public function test()
     {
         return $this->belongsTo(Test::class);
+    }
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class,'question_id');
     }
 }
 

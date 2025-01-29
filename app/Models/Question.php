@@ -22,6 +22,11 @@ class Question extends Model
         return $this->hasMany(Option::class);
     }
 
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class,'topic_id');
+    }
+
     public function testResponse()
     {
         return $this->hasOne(TestResponse::class);

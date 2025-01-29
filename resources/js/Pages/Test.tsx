@@ -35,24 +35,41 @@ const exams = [
     },
 ];
 
-export default function ExamsPage() {
+interface Test {
+    id: number;
+    type: string;
+    duration: number;
+    teacher_id: number;
+    start_date: string;
+    created_at: string;
+}
+
+interface TestsProps {
+    status: string;
+    test: Test;
+}
+
+export default function ExamsPage({ tests,userRole }: { tests: TestsProps[], userRole: string }) {
+
     return (
         <Layout>
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-3xl font-bold">Exams</h1>
-                    <Button>Schedule New Exam</Button>
+                    <h1 className="text-3xl font-bold">Tests</h1>
+                    {
+                        userRole === "teacher" && <Button>Schedule New Test</Button>
+                    }
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {exams.map((exam) => (
-                        <Card key={exam.id}>
+                    {tests.map((test) => (
+                        <Card key={test.test.id}>
                             <CardHeader>
-                                <CardTitle>{exam.title}</CardTitle>
+                                <CardTitle>{test.test.type}</CardTitle>
                                 <CardDescription>
                                     <div className="flex items-center">
                                         <Calendar className="mr-2 h-4 w-4" />
                                         {new Date(
-                                            exam.date
+                                            test.test.start_date ? test.test.start_date : test.test.created_at 
                                         ).toLocaleDateString()}
                                     </div>
                                 </CardDescription>
@@ -61,31 +78,34 @@ export default function ExamsPage() {
                                 <div className="flex justify-between items-center text-sm text-muted-foreground">
                                     <div className="flex items-center">
                                         <Clock className="mr-1 h-4 w-4" />
-                                        Duration: {exam.duration} minutes
+                                        Duration: {test.test.duration} minutes
                                     </div>
                                     <Badge
+                                        className="capitalize"
                                         variant={
-                                            exam.status === "Upcoming"
+                                            test.status === "completed"
                                                 ? "default"
                                                 : "secondary"
                                         }
                                     >
-                                        {exam.status}
+                                        {test.status}
                                     </Badge>
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-between items-center">
-                                {exam.status === "Upcoming" ? (
+                                {test.status === "completed" ? (
                                     <Button className="w-full">
-                                        Start Exam
+                                      View Results  
                                     </Button>
                                 ) : (
-                                    <Button
+                                    <a className="w-full" href={`/tests/${test.test.id}`}>
+                                        <Button
                                         variant="outline"
                                         className="w-full"
                                     >
-                                        View Results
+                                        Start test
                                     </Button>
+                                    </a>
                                 )}
                             </CardFooter>
                         </Card>

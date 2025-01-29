@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('test_id')->default(1);
+            $table->string("status")->default("pending");
             $table->foreign('student_id')
                 ->references('id')
                 ->on('students')
