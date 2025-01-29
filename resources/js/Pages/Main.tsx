@@ -1,13 +1,14 @@
+import QuizSession from "@/components/QuizSession";
 import { Layout } from "@/layouts/Layout";
-import Dashboard from "./Dashboard";
 
-const Main = () => {
+const Dashboard = () => {
     return (
         <Layout>
-            <h1 className="text-3xl font-bold mb-6">Welcome to EduTestify</h1>
-            <Dashboard />
+            <main className="flex-1 overflow-y-auto  ">
+                <QuizSession />
+            </main>
         </Layout>
     );
 };
 
-export default Main;
+export default Dashboard;

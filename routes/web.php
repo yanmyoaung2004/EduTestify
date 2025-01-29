@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PracticeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizzController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TestController;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 //dashboard
-Route::get('/', [DashboardController::class, 'index']);
+Route::get('/main', [DashboardController::class, 'main']);
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
 
@@ -35,7 +36,7 @@ Route::get('/quizzes', [QuizzController::class, 'index']);
 Route::get('/exams', [ExamController::class, 'index']);
 
 //Exam
-Route::get('/profile', [DashboardController::class, 'index']);
+Route::get('/profile', [ProfileController::class, 'index']);
 
 
 //Exam

@@ -23,14 +23,13 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-// import { useTheme } from "next-themes";
 import { Layout } from "@/layouts/Layout";
+import { ModeToggle } from "@/components/ThemeModeToggler";
 
 export default function SettingsPage() {
     const [twoFactor, setTwoFactor] = useState(false);
     const [emailNotifications, setEmailNotifications] = useState(true);
     const [profileVisibility, setProfileVisibility] = useState(true);
-    // const { theme, setTheme } = useTheme();
 
     return (
         <Layout>
@@ -97,18 +96,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-4">
                                 <div className="flex items-center space-x-2">
                                     <Label htmlFor="theme">Theme</Label>
-                                    <select
-                                        id="theme"
-                                        // value={theme}
-                                        // onChange={(e) =>
-                                        //     setTheme(e.target.value)
-                                        // }
-                                        className="ml-auto"
-                                    >
-                                        <option value="light">Light</option>
-                                        <option value="dark">Dark</option>
-                                        <option value="system">System</option>
-                                    </select>
+                                    <ModeToggle />
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <Label htmlFor="font-size">Font Size</Label>

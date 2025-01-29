@@ -15,13 +15,25 @@ class TopicSeeder extends Seeder
     {
         DB::table('topics')->insert([
             [
-                'name' => 'Topic 1',
+                'name' => 'Coorporate Activities',
                 'chapter_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Topic 2',
+                'name' => 'Coorporate Accounting',
+                'chapter_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Management Service',
+                'chapter_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Legal Affairs and Standardization',
                 'chapter_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
