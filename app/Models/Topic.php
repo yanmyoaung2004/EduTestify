@@ -14,6 +14,11 @@ class Topic extends Model
         'name',
     ];
 
+    public function questions()
+    {
+        return $this->hasMany(Question::class,'topic_id');
+    }
+
     public function chapter()
     {
         return $this->belongsTo(Chapter::class);

@@ -9,7 +9,7 @@ class TestStudent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id', 'test_id'];
+    protected $fillable = ['student_id', 'test_id','status'];
 
     public function student()
     {
@@ -19,6 +19,11 @@ class TestStudent extends Model
     public function test()
     {
         return  $this->belongsTo(Test::class, 'test_id');
+    }
+
+    public function testQuestions()
+    {
+        return $this->hasMany(TestQuestion::class, 'test_id', 'test_id');
     }
 
     public function testResponses()

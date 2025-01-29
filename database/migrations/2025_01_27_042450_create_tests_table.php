@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('teacher_id')->nullable();
             $table->string('type');
+            $table->string('duration')->nullable();
+            $table->string('start_date');
+            $table->string('description')->nullable();
             $table->foreign('teacher_id')
                 ->references('id')
                 ->on('teachers')
                 ->onDelete('cascade');
-
             $table->timestamps();
         });
     }

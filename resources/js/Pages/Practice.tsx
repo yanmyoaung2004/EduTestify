@@ -64,8 +64,8 @@ export default function PracticePage({
         if (currentSubject) {
             router.get('/practice', { subject:  currentSubject}, {
                 preserveState: true,
-                
                 onSuccess: (page: any) => setSubjects(page.props.subjects),
+                onError: (error: any) => console.error(error),
             });
         }
     }, [currentSubject]);
