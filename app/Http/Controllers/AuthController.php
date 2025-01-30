@@ -12,25 +12,16 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return Inertia::render('Login', [
-            'status' => 200]);
+        return Inertia::render('Login');
     }
 
     public function showRegisterForm()
     {
-        return Inertia::render('Register', [
-            'status' => 200
-        ]);
+        return Inertia::render('Register');
     }
 
     public function register(Request $request)
     {
-        return Inertia::render('Register', [
-                'message' => 'You have successfully registered!',
-                'status' => 201,
-                'randomKey' => uniqid('student_', true)
-            ]);
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
@@ -40,9 +31,9 @@ class AuthController extends Controller
         $existedUser = Student::where('email', $request->email)->first();
         if ($existedUser != null) {
             return Inertia::render('Register', [
-                'message' => 'User already existed!',
-                'status' => 409,
-                'randomKey' => uniqid('student_', true)
+                'errors' => [
+                    'message' => 'User already existed!',
+                    ]
                 ]);
         }
         $user = Student::create([
@@ -52,39 +43,44 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-        return to_route('login');
-
+        return Inertia::render('Register', [
+                'message' => 'You have successfully registered!',
+            ]);
     }
 
     public function login(Request $request)
     {
-        $existedUser = Student::where('email', $request->email)->first();
-        if ($existedUser == null) {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+        $existedStudent = Student::where('email', $request->email)->first();
+        if ($existedStudent == null) {
             return Inertia::render('Login', [
-                'message' => 'User Not Found!',
-                'status' => 409,
-                'randomKey' => uniqid('student_', true)
-                ]);
+                'errors' => [
+                    'message' => 'User Not Found!',
+                ]]);
         }
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::guard('students')->attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
-            return redirect('/');
+            return Inertia::render('Login', [
+                'message' => 'You have successfully logged in!',
+            ]);
         }
+
         return Inertia::render('Login', [
-                'message' => 'Incorrect Password!',
-                'status' => 401
+                'errors' => [
+                    'message' => 'Incorrect Password!',
+                ]
             ]);
     }
 
-
-
-    // Handle logout request
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('login');
+        return redirect('/practice');
     }
 
 }

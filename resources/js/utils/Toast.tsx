@@ -10,7 +10,7 @@ export const handleSuccessToast = (message: string): void => {
                 <span>{message}</span>
             </div>
         ),
-        duration: 3000,
+        duration: 2500,
         style: {
             backgroundColor: "#b6f8c4",
         },
@@ -34,7 +34,7 @@ export const handleSuccessToastWithLink = (
                 </Link>
             </div>
         ),
-        duration: 3000,
+        duration: 2500,
         style: {
             backgroundColor: "#b6f8c4",
         },
@@ -61,7 +61,7 @@ export const handleWarningToast = (message: string): void => {
                 <span>{message}</span>
             </div>
         ),
-        duration: 3000,
+        duration: 2500,
         style: {
             backgroundColor: "#fae7c7",
         },

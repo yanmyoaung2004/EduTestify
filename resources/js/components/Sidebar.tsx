@@ -1,10 +1,21 @@
-import React from "react";
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { Link, usePage } from "@inertiajs/react";
 import { Home, BookOpen, FileText, User, Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "@inertiajs/react";
+import { Button } from "./ui/button";
+import React from "react";
+import { cn } from "@/lib/utils";
 
-const navItems = [
-    { icon: Home, label: "Dashboard", href: "/" },
+const items = [
+    { icon: Home, label: "Dashboard", href: "/dashboard" },
     { icon: BookOpen, label: "Practice", href: "/practice" },
     { icon: FileText, label: "Quizzes", href: "/quizzes" },
     { icon: FileText, label: "Tests", href: "/tests" },
@@ -12,27 +23,50 @@ const navItems = [
     { icon: Settings, label: "Settings", href: "/settings" },
 ];
 
-const Sidebar = React.memo(() => {
+const AppSidebar = React.memo(() => {
+    const { url } = usePage();
+
     return (
-        <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-background border-r">
-            <div className="flex h-16 items-center justify-center border-b">
-                <h1 className="text-2xl font-bold">EduTestify</h1>
-            </div>
-            <nav className="space-y-1 p-4">
-                {navItems.map((item) => (
-                    <Link href={item.href} key={item.href}>
-                        <Button
-                            variant="ghost"
-                            className="w-full justify-start"
-                        >
-                            <item.icon className="mr-2 h-5 w-5" />
-                            {item.label}
-                        </Button>
-                    </Link>
-                ))}
-            </nav>
-        </aside>
+        <Sidebar>
+            <SidebarContent>
+                <SidebarGroup>
+                    <SidebarGroupLabel className="text-2xl font-bold py-7 mb-1 text-black dark:text-white">
+                        EduTestify
+                    </SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {items.map((item) => {
+                                const isActive = url.startsWith(item.href);
+                                return (
+                                    <SidebarMenuItem key={item.label}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            className="h-10"
+                                            isActive={isActive}
+                                        >
+                                            <Link href={item.href}>
+                                                <Button
+                                                    variant={"ghost"}
+                                                    className={cn(
+                                                        "w-full justify-start",
+                                                        isActive &&
+                                                            "bg-[--sidebar-active-bg] text-[--sidebar-active-fg] hover:bg-[--sidebar-active-bg] hover:text-[--sidebar-active-fg]"
+                                                    )}
+                                                >
+                                                    <item.icon className="mr-1 h-5 w-5" />
+                                                    {item.label}
+                                                </Button>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                );
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarContent>
+        </Sidebar>
     );
 });
 
-export { Sidebar };
+export { AppSidebar };

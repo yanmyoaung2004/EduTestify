@@ -36,7 +36,7 @@ public function index()
                     'status' => $testStudent->status,
                 ];
             });
-    }
+        }
 
     return Inertia::render('Test', [
         'tests' => $tests,
@@ -46,33 +46,30 @@ public function index()
 
 public function show($id)
 {
-
     $testStudent = TestStudent::where('test_id', $id)
-    ->with('test')
-    ->select('id', 'test_id', 'status', 'student_id', 'created_at')
-    ->first();
-
+                    ->with('test')
+                    ->select('id', 'test_id', 'status', 'student_id', 'created_at')
+                    ->first();
     $testStudent->load('testQuestions.question.topic');
-
-
     $questions = $testStudent->testQuestions;
-
-
     $testQuestionsLength = $questions->count();
-
-
     $coverTopic = $questions->pluck('question.topic')->unique();
 
-
     $testData = [
-    'testStudent' => $testStudent->only(['id', 'test_id', 'status', 'student_id', 'created_at', 'test']),
-    'testQuestionsLength' => $testQuestionsLength,
-    ];
-    return Inertia::render('TestDetail', [
-        'testData' => $testData,
-        'coverTopics' => $coverTopic,
-    ]);
+        'testStudent' => $testStudent->only(['id', 'test_id', 'status', 'student_id', 'created_at', 'test']),
+        'testQuestionsLength' => $testQuestionsLength,
+        ];
+        return Inertia::render('TestDetail', [
+            'testData' => $testData,
+            'coverTopics' => $coverTopic,
+        ]);
 
-}
+    }
+
+    public function takeExam(){
+
+
+        return Inertia::render('Exam');
+    }
 
 }
